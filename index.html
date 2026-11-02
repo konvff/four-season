@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coming soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F0FF; --fg:#14197A; --muted:#4A4F9C; --accent:#3B3BF0; --on-accent:#fff; --hi:#FFD84D; --line:#C9C6F5;
+  --font:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0F1148;--fg:#EDEBFF;--muted:#A9ADEB;--accent:#8F95FF;--on-accent:#0F1148;--line:#2B2F8F}
+}
+:root[data-theme="dark"]{--bg:#0F1148;--fg:#EDEBFF;--muted:#A9ADEB;--accent:#8F95FF;--on-accent:#0F1148;--line:#2B2F8F}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column;overflow-x:hidden}
+.wrap{width:100%;max-width:1100px;margin:0 auto;padding:clamp(20px,4vw,48px)}
+header{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1.25rem;letter-spacing:-.02em}
+.badge{font-weight:400;font-size:.9rem;padding:.35rem .8rem;border:1.5px solid var(--fg);border-radius:999px}
+.badge::before{content:"";display:inline-block;width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);margin-right:.5rem;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+main{flex:1;display:flex;flex-direction:column;justify-content:center}
+h1{margin:0;font-weight:800;font-size:clamp(2.6rem,8vw,6rem);line-height:.98;letter-spacing:-.04em;max-width:12ch}
+h1 span{background:linear-gradient(transparent 62%,var(--hi) 62% 92%,transparent 92%)}
+.lede{margin:1.4rem 0 0;max-width:46ch;font-size:clamp(1.05rem,2vw,1.25rem);line-height:1.5;color:var(--muted)}
+.clock{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,2vw,24px);margin:clamp(2rem,6vw,4rem) 0;border-top:2px solid var(--fg);padding-top:1rem}
+.unit b{display:block;font-weight:800;font-size:clamp(2.8rem,13vw,9rem);line-height:.9;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--accent)}
+.unit small{font-size:clamp(.8rem,1.6vw,1rem);color:var(--muted)}
+form{display:flex;gap:.6rem;flex-wrap:wrap;max-width:520px}
+input{flex:1 1 220px;min-width:0;font:inherit;font-size:1rem;padding:.9rem 1.1rem;border-radius:12px;border:1.5px solid var(--fg);background:transparent;color:var(--fg)}
+input::placeholder{color:var(--muted)}
+button{font:inherit;font-weight:800;font-size:1rem;padding:.9rem 1.4rem;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);cursor:pointer;transition:transform .15s}
+button:hover{transform:translateY(-2px)}
+input:focus-visible,button:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+.msg{min-height:1.5em;margin:.8rem 0 0;font-size:.95rem;color:var(--muted)}
+footer{padding:1.5rem 0 0;font-size:.9rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+footer a{color:inherit}
+@media (prefers-reduced-motion:reduce){.badge::before{animation:none}button{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap" style="display:flex;flex-direction:column;flex:1">
+  <header>
+    <div>Brandname</div>
+    <div class="badge">Launching soon</div>
+  </header>
+
+  <main>
+    <h1>Something new is <span>almost here</span></h1>
+    <p class="lede">We’re putting the finishing touches on our launch. Leave your email and we’ll tell you the moment we go live.</p>
+
+    <div class="clock" role="timer" aria-label="Time until launch">
+      <div class="unit"><b id="d">00</b><small>days</small></div>
+      <div class="unit"><b id="h">00</b><small>hours</small></div>
+      <div class="unit"><b id="m">00</b><small>minutes</small></div>
+      <div class="unit"><b id="s">00</b><small>seconds</small></div>
+    </div>
+
+    <form id="f" novalidate>
+      <input id="e" type="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required>
+      <button type="submit">Notify me</button>
+    </form>
+    <p class="msg" id="msg" aria-live="polite"></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Brandname</span>
+    <span>Questions? <a href="mailto:hello@example.com">hello@example.com</a></span>
+  </footer>
+</div>
+
+<script>
+// Change this date to your real launch date.
+var LAUNCH = new Date("2026-12-15T09:00:00");
+var ids = {d:document.getElementById("d"),h:document.getElementById("h"),m:document.getElementById("m"),s:document.getElementById("s")};
+function pad(n){return String(n).padStart(2,"0")}
+function tick(){
+  var diff = Math.max(0, LAUNCH - new Date());
+  var t = Math.floor(diff/1000);
+  ids.d.textContent = pad(Math.floor(t/86400));
+  ids.h.textContent = pad(Math.floor(t%86400/3600));
+  ids.m.textContent = pad(Math.floor(t%3600/60));
+  ids.s.textContent = pad(t%60);
+}
+tick(); setInterval(tick,1000);
+
+document.getElementById("f").addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var v = document.getElementById("e").value.trim();
+  var msg = document.getElementById("msg");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){msg.textContent="Enter a valid email address, like you@example.com.";return;}
+  msg.textContent="You’re on the list. We’ll email you at launch.";
+  this.reset();
+});
+</script>
+</body>
+</html>
